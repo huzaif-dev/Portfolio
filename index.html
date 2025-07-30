@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .skill-bar {
+            height: 8px;
+            background-color: #e5e7eb;
+            border-radius: 4px;
+        }
+        .skill-progress {
+            height: 100%;
+            background-color: #60a5fa;
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+        }
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(67, 64, 64, 0.2);
+        }
+        .btn-animated {
+            position: relative;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .btn-animated:hover {
+            background-color: #2563eb;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .btn-animated[href*="mailto"] {
+            background-color: #43bb67;
+        }
+        .btn-animated[href*="mailto"]:hover {
+            background-color: #6fa86e;
+        }
+        .profile-img {
+            animation: bounce 2s infinite;
+        }
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+        .grid-card {
+            position: relative;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background-clip: padding-box;
+        }
+        .grid-card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #93c5fd, #a5b4fc, #c4b5fd);
+            border-radius: 12px;
+            z-index: -1;
+            animation: glow 2s ease-in-out infinite;
+        }
+        @keyframes glow {
+            0% {
+                filter: brightness(1);
+            }
+            50% {
+                filter: brightness(1.2);
+            }
+            100% {
+                filter: brightness(1);
+            }
+        }
+        .dark-mode {
+            background-color: #1f2937;
+            color: #f9fafb;
+        }
+        .dark-mode header {
+            background-color: #1e293b;
+            color: #f9fafb;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .dark-mode .bg-gray-900 {
+            background-color: #374151;
+        }
+        .dark-mode .bg-gray-800 {
+            background-color: #4b5563;
+        }
+        .dark-mode .text-white {
+            color: #f9fafb;
+        }
+        .dark-mode .bg-blue-600 {
+            background-color: #3b82f6;
+        }
+        .dark-mode .hover:bg-blue-700 {
+            background-color: #2563eb;
+        }
+        .dark-mode .bg-gray-700 {
+            background-color: #6b7280;
+        }
+        .dark-mode .hover:bg-gray-800 {
+            background-color: #4b5563;
+        }
+        .dark-mode a {
+            color: #93c5fd;
+        }
+        .dark-mode a:hover {
+            color: #60a5fa;
+        }
+        .light-mode {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e0e7ff 100%);
+            color: #1f2937;
+        }
+        .light-mode header {
+            background-color: #ffffff;
+            color: #1f2937;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .light-mode .bg-gray-900 {
+            background-color: #e5e7eb;
+        }
+        .light-mode .bg-gray-800 {
+            background-color: #d1d5db;
+        }
+        .light-mode .text-white {
+            color: #1f2937;
+        }
+        .light-mode .bg-blue-600 {
+            background-color: #93c5fd;
+        }
+        .light-mode .hover:bg-blue-700 {
+            background-color: #60a5fa;
+        }
+        .light-mode .bg-gray-700 {
+            background-color: #9ca3af;
+        }
+        .light-mode .hover:bg-gray-800 {
+            background-color: #6b7280;
+        }
+        .light-mode a {
+            color: #3b82f6;
+        }
+        .light-mode a:hover {
+            color: #2563eb;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        section {
+            padding-left: 1rem;
+            padding-right: 1rem;
+        }
+        .nav-icon {
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+        .nav-icon:hover {
+            transform: scale(1.2);
+            color: #60a5fa;
+        }
+        .hamburger {
+            display: none;
+        }
+        .nav-menu {
+            transition: all 0.3s ease;
+        }
+        [data-category="safety"] .icon-container {
+            background-color: #3b82f6; /* Blue for safety */
+        }
+        [data-category="scientific"] .icon-container {
+            background-color: #10b981; /* Green for scientific */
+        }
+        @media (max-width: 640px) {
+            .profile-img {
+                width: 150px;
+                height: 150px;
+            }
+            .nav-icon {
+                font-size: 1.5rem;
+            }
+            .btn-animated {
+                padding: 0.5rem 1rem;
+                font-size: 0.9rem;
+            }
+            .hamburger {
+                display: block;
+            }
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                background-color: #ffffff;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            .nav-menu.active {
+                display: flex;
+            }
+            .light-mode .nav-menu {
+                background-color: #ffffff;
+            }
+            .dark-mode .nav-menu {
+                background-color: #1e293b;
+            }
+            #hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            #hero .profile-img {
+                margin-bottom: 1rem;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            #hero .text-content {
+                width: 100%;
+                text-align: center;
+            }
+        }
+        @media (min-width: 1280px) {
+            section {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+            .profile-img {
+                width: 250px;
+                height: 250px;
+            }
+            .w-full.sm\:w-1\/2.flex.justify-center.sm\:justify-end {
+                margin-right: 05%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans light-mode">
+    <header class="bg-white text-gray-900 p-4 flex justify-between items-center sticky top-0 z-10 shadow-md">
+        <div>
+            <h1 class="text-xl sm:text-2xl font-bold">My Portfolio</h1>
+        </div>
+        <button class="hamburger nav-icon text-xl sm:hidden" title="Toggle Menu">
+            <i class="fas fa-bars"></i>
+        </button>
+        <nav class="nav-menu mt-4 sm:mt-0 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 items-center">
+            <a href="#skills" class="flex items-center text-gray-700 hover:text-blue-600 transition-colors duration-200 p-2 rounded-md">
+                <i class="fas fa-code text-lg sm:text-xl mr-2"></i>
+                <span class="font-medium text-base sm:text-lg">Skills</span>
+            </a>
+            <a href="#projects" class="flex items-center text-gray-700 hover:text-blue-600 transition-colors duration-200 p-2 rounded-md">
+                <i class="fas fa-briefcase text-lg sm:text-xl mr-2"></i>
+                <span class="font-medium text-base sm:text-lg">Projects</span>
+            </a>
+            <a href="#contact" class="flex items-center text-gray-700 hover:text-blue-600 transition-colors duration-200 p-2 rounded-md">
+                <i class="fas fa-envelope text-lg sm:text-xl mr-2"></i>
+                <span class="font-medium text-base sm:text-lg">Contact</span>
+            </a>
+            <button id="theme-toggle" class="nav-icon text-xl sm:text-2xl bg-transparent px-3 py-3 sm:px-4 py-3 text-gray-700 hover:text-blue-600 transition-colors duration-200" title="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </nav>
+    </header>
+
+    <section id="hero" class="py-6 sm:py-9 flex flex-col sm:flex-row items-center justify-between">
+        <div class="w-full sm:w-1/2 px-4 sm:px-6 order-2 sm:order-1 text-content">
+            <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold py-9">Hi, I'm <span class="text-blue-600">Abdul Basit Javed</span></h2>
+            <p class="text-lg sm:text-xl mt-2">Medical Billing Expert</p>
+            <p class="mt-4 text-sm sm:text-base max-w-md py-3">Transforming medical billing processes to ensure accuracy and compliance.</p>
+            <div class="mt-6 flex space-x-4 justify-center sm:justify-start">
+                <a href="mailto:abdulbasitjaved140@gmail.com" class="btn-animated bg-green-700 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full hover:bg-green-800 text-sm sm:text-base">Contact Me</a>
+            </div>
+        </div>
+        <div class="w-full sm:w-1/2 flex justify-center sm:justify-end px-4 sm:px-6 mt-6 sm:mt-0 order-1 sm:order-2">
+            <img src="dp.jpg" alt="Profile Picture" class="profile-img rounded-full" style="width: 250px; height: 250px; object-fit: cover;">
+        </div>
+    </section>
+
+    <section id="about" class="py-6 sm:py-9 text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">About Me</h2>
+        <p class="text-base sm:text-lg mb-4 sm:mb-6 max-w-md sm:max-w-3xl mx-auto">Discover my journey, passions, and the story behind my work</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 px-2 sm:px-4">
+            <div class="bg-gray-800 p-4 sm:p-6 rounded-lg grid-card">
+                <h3 class="text-lg sm:text-xl font-semibold mb-2">Bio</h3>
+                <p class="text-sm sm:text-base">Certified CPD Medical Biller from Elison, USA. specialized in the healthcare industry.</p>
+            </div>
+            <div class="bg-gray-800 p-4 sm:p-6 rounded-lg grid-card">
+                <h3 class="text-lg sm:text-xl font-semibold mb-2">Hobbies</h3>
+                <p class="text-sm sm:text-base">Love Poetry, Book Reading, and Traveling.</p>
+            </div>
+            <div class="bg-gray-800 p-4 sm:p-6 rounded-lg grid-card Anno Domini card">
+                <h3 class="text-lg sm:text-xl font-semibold mb-2">Languages</h3>
+                <p class="text-sm sm:text-base">Fluent in English, Urdu, and Punjabi.</p>
+            </div>
+        </div>
+        <div class="mt-4 sm:mt-6 space-x-2 sm:space-x-4 py-6 sm:py-9">
+            <a href="https://www.linkedin.com/in/abdul-basit-javed-offical/" class="btn-animated bg-blue-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg hover:bg-blue-700 text-sm sm:text-base">Follow me on LinkedIn</a>
+        </div>
+    </section>
+
+    <section id="education" class="py-6 sm:py-12 lg:py-20 text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Educational Background</h2>
+        <p class="text-base sm:text-lg mb-4 sm:mb-6 max-w-md sm:max-w-3xl mx-auto">My academic journey and continuous learning in software engineering and web development</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 px-2 sm:px-4">
+            <div class="bg-gray-800 p-4 sm:p-6 rounded-lg grid-card">
+                <h3 class="text-lg sm:text-xl font-semibold mb-2">Medical Billing</h3>
+                <p class="text-sm sm:text-base">Integrity RCM LLC (2024-2025), Lahore, Pakistan</p>
+                <p class="text-sm sm:text-base">Medical Billing Specialist</p>
+            </div>
+            <div class="bg-gray-800 p-4 sm:p-6 rounded-lg grid-card">
+                <h3 class="text-lg sm:text-xl font-semibold mb-2">Bachelor of Science in Physics</h3>
+                <p class="text-sm sm:text-base">(2 Year Associate Degree Program)</p>
+                <p class="text-sm sm:text-base">KFUEIT (2021-2023), Rahim Yar Khan, Punjab, Pakistan</p>
+                <p class="text-sm sm:text-base">Graduated</p>
+            </div>
+            <div class="bg-gray-800 p-4 sm:p-6 rounded-lg grid-card">
+                <h3 class="text-lg sm:text-xl font-semibold mb-2">Bachelor of Science (Mathematics & Physics)</h3>
+                <p class="text-sm sm:text-base">The Islamia University of Bahawalpur (2018-2020), Punjab, Pakistan</p>
+                <p class="text-sm sm:text-base">Graduated</p>
+                <p class="text-sm sm:text-base">Focused on Problem solving.</p>
+            </div>
+            <div class="bg-gray-800 p-4 sm:p-6 rounded-lg grid-card">
+                <h3 class="text-lg sm:text-xl font-semibold mb-2">Intermediate</h3>
+                <p class="text-sm sm:text-base">Iqra College (2016 - 2018), Sadiqabad, Pakistan</p>
+                <p class="text-sm sm:text-base">Graduated</p>
+                <p class="text-sm sm:text-base">Strong foundation in Physics & Mathematics.</p>
+            </div>
+            <div class="bg-gray-800 p-4 sm:p-6 rounded-lg grid-card">
+                <h3 class="text-lg sm:text-xl font-semibold mb-2">High School</h3>
+                <p class="text-sm sm:text-base">Iqra School (2013 - 2015), Sadiqabad, Pakistan</p>
+                <p class="text-sm sm:text-base">Graduated</p>
+                <p class="text-sm sm:text-base">Strong foundation in Science.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="py-6 sm:py-9 text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Skills & Expertise</h2>
+        <p class="text-base sm:text-lg mb-4 sm:mb-6 max-w-md sm:max-w-3xl mx-auto">Technical competencies and professional expertise through experience and continuous learning</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 px-2 sm:px-4">
+            <div class="bg-gray-800 p-4 sm:p-6 lg:p-9 rounded-lg grid-card">
+                <h3 class="text-lg sm:text-xl font-semibold mb-4">Medical Billing</h3>
+                <div class="flex items-center mb-3 sm:mb-4">
+                    <span class="w-1.5/3 sm:w-1/4 text-sm sm:text-base">Claim Creation</span>
+                    <div class="w-1.5/3 sm:w-3/4">
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 80%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center mb-3 sm:mb-4">
+                    <span class="w-1.5/3 sm:w-1/4 text-sm sm:text-base">Account Recievable (AR)</span>
+                    <div class="w-1.5/3 sm:w-3/4">
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 70%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center mb-3 sm:mb-4">
+                    <span class="w-1/3 sm:w-1/4 text-sm sm:text-base">Payment Posting</span>
+                    <div class="w-2/3 sm:w-3/4">
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 50%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-800 p-4 sm:p-6 lg:p-9 rounded-lg grid-card">
+                <h3 class="text-lg sm:text-xl font-semibold mb-4">Truck Dispatching & Insurance</h3>
+                <div class="flex items-center mb-3 sm:mb-4">
+                    <span class="w-2/3 sm:w-1/4 text-sm sm:text-base">Supervise Role</span>
+                    <div class="w-1/3 sm:w-3/4">
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 80%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center mb-3 sm:mb-4">
+                    <span class="w-1/3 sm:w-1/4 text-sm sm:text-base">CSR</span>
+                    <div class="w-2/3 sm:w-3/4">
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 80%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center mb-3 sm:mb-4">
+                    <span class="w-1/3 sm:w-1/4 text-sm sm:text-base">HR</span>
+                    <div class="w-2/3 sm:w-3/4">
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 50%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-gray-800 p-4 sm:p-6 rounded-lg grid-card">
+                <h3 class="text-lg sm:text-xl font-semibold mb-4">Teaching</h3>
+                <div class="flex items-center mb-3 sm:mb-4">
+                    <span class="w-1/3 sm:w-1/4 text-sm sm:text-base">Engaging Listeners</span>
+                    <div class="w-2/3 sm:w-3/4">
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 80%"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center mb-3 sm:mb-4">
+                    <span class="w-1/3 sm:w-1/4 text-sm sm:text-base">Problem Solving</span>
+                    <div class="w-2/3 sm:w-3/4">
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 70%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="py-6 sm:py-9 text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Projects</h2>
+        <p class="text-base sm:text-lg mb-4 sm:mb-6 max-w-md sm:max-w-3xl mx-auto">A showcase of my work, skills across various domains, and problem-solving</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 px-2 sm:px-4">
+            <div class="bg-gray-800 p-4 sm:p-6 rounded-lg project-card grid-card" data-category="safety">
+                <div class="flex justify-center mb-4">
+                    <div class="icon-container rounded-full w-10 sm:w-12 h-10 sm:h-12 flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-white text-base sm:text-lg" aria-label="Safety Project Icon"></i>
+                    </div>
+                </div>
+                <h3 class="text-lg sm:text-xl font-semibold mb-2">Anti Sleep Alarm For Drivers</h3>
+                <p class="text-sm sm:text-base">A life Saving Project For Drivers</p>
+                <div class="mt-4 text-xs sm:text-sm text-gray-400">
+                    The Antisleep Alarm for Drivers project aims to enhance road safety by preventing accidents
+                    caused by drowsy driving. It utilizes wearable or in-car devices with sensors to detect signs
+                    of driver fatigue, triggering an alarm (auditory or vibratory) to alert and re-awaken the
+                    driver. While effective, the project also emphasizes the importance of drivers prioritizing
+                    sufficient rest and taking breaks on long journeys.
+                </div>
+            </div>
+            <div class="bg-gray-800 p-4 sm:p-6 rounded-lg project-card grid-card" data-category="scientific">
+                <div class="flex justify-center mb-4">
+                    <div class="icon-container rounded-full w-10 sm:w-12 h-10 sm:h-12 flex items-center justify-center">
+                        <i class="fas fa-flask text-white text-base sm:text-lg" aria-label="Scientific Project Icon"></i>
+                    </div>
+                </div>
+                <h3 class="text-lg sm:text-xl font-semibold mb-2">Low Cost Spin Coater</h3>
+                <p class="text-sm sm:text-base">A Low Cost Spin Coater for the Prepration of Thin Layers</p>
+                <div class="mt-4 text-xs sm:text-sm text-gray-400">
+                    This Spin Coater Work Like Other Spin Coaters and Showing Same Results which are very Costly
+                    Spin Coaters Prices Start from 40 K but we have Successfully Make Low Cost Spin Coater Which is Very Useful in lab Purposes.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-6 sm:py-12 lg:py-20 text-center">
+        <h2 class="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">Get in Touch</h2>
+        <p class="text-base sm:text-lg mb-4 sm:mb-6 max-w-md sm:max-w-3xl mx-auto">Reach out to collaborate, discuss opportunities, or just say hi!</p>
+        <div class="grid grid-cols-1 gap-4 sm:gap-6 max-w-md sm:max-w-2xl mx-auto">
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-6">
+                <div class="flex items-center text-base sm:text-lg">
+                    <i class="fas fa-envelope mr-2"></i>
+                    <a href="mailto:abdulbasitjaved140@gmail.com" class="hover:underline">abdulbasitjaved140@gmail.com</a>
+                </div>
+                <div class="flex items-center text-base sm:text-lg">
+                    <i class="fas fa-phone mr-2"></i>
+                    <a href="tel:+923048614412" class="hover:underline">+92 304-8614412</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-800 text-center p-4 sm:p-6">
+        <p class="text-sm sm:text-base">©2025 <a href="https://www.linkedin.com/in/huzaifajaved/" class="hover:underline">Huzaifa</a>. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+        const hamburger = document.querySelector('.hamburger');
+        const navmenu = document.querySelector('.nav-menu');
+        const body = document.body;
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('light-mode');
+            body.classList.toggle('dark-mode');
+        });
+
+        hamburger.addEventListener('click', () => {
+            navmenu.classList.toggle('active');
+            hamburger.querySelector('i').classList.toggle('fa-bars');
+            hamburger.querySelector('i').classList.toggle('fa-times');
+        });
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navmenu.classList.remove('active');
+                hamburger.querySelector('i').classList.add('fa-bars');
+                hamburger.querySelector('i').classList.remove('fa-times');
+            });
+        });
+
+        const categoryIcons = {
+            safety: 'fa-shield-alt',
+            scientific: 'fa-flask'
+        };
+
+        function applyProjectIcons() {
+            const projectCards = document.querySelectorAll('.project-card');
+            projectCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                const iconElement = card.querySelector('i');
+                if (category && categoryIcons[category] && iconElement) {
+                    iconElement.className = `fas ${categoryIcons[category]} text-white text-base sm:text-lg`;
+                    iconElement.setAttribute('aria-label', `${category.charAt(0).toUpperCase() + category.slice(1)} Project Icon`);
+                }
+            });
+        }
+        document.addEventListener('DOMContentLoaded', applyProjectIcons);
+    </script>
+</body>
+</html>
